@@ -25,7 +25,7 @@ jobs:
       - name: Running ESlint
         run: yarn run lint
       - name: Running Prettier
-        run: yarn run prettier
+        run: yarn run format
       - name: Building Project
         run: yarn run build
       - name: Checking Git Status
