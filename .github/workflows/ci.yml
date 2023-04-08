@@ -1,0 +1,40 @@
+name: Continuous Integration Pipeline
+
+# src: https://github.com/G0maa/my-school-server/blob/master/.github/workflows/ci.yml
+on:
+  push:
+    branches:
+      - master
+      # - main
+  pull_request:
+    branches: [master]
+    types: [opened, synchronize]
+
+jobs:
+  ci:
+    if: |
+      contains(join(toJson(github.event.commits.*.message), ' '), '#skipchecks') != true
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
+        with:
+          node-version: 18
+      - name: Installing Dependencies
+        run: yarn install
+      - name: Running ESlint
+        run: yarn run lint
+      - name: Running Prettier
+        run: yarn run prettier
+      - name: Building Project
+        run: yarn run build
+      - name: Checking Git Status
+        run: git status
+      - name: Renaming .sample.env to .env
+        run: mv .sample.env .env
+      - name: Starting Docker DB Container
+        run: yarn run db:up
+      - name: Running API Tests
+        run: yarn run test
+      # - name: Upload coverage to Codecov Later
+      #   uses: codecov/codecov-action@v3
