@@ -36,5 +36,5 @@ jobs:
         run: yarn run db:up
       - name: Running API Tests
         run: yarn run test
-      # - name: Upload coverage to Codecov Later
-      #   uses: codecov/codecov-action@v3
+      - name: Upload coverage to Codecov Later
+        uses: codecov/codecov-action@v3
