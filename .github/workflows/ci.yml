@@ -25,7 +25,7 @@ jobs:
       - name: Running ESlint
         run: yarn run lint
       - name: Running Prettier
-        run: yarn run prettier
+        run: yarn run format
       - name: Building Project
         run: yarn run build
       - name: Checking Git Status
@@ -36,5 +36,5 @@ jobs:
         run: yarn run db:up
       - name: Running API Tests
         run: yarn run test
-      # - name: Upload coverage to Codecov Later
-      #   uses: codecov/codecov-action@v3
+      - name: Upload coverage to Codecov Later
+        uses: codecov/codecov-action@v3
