@@ -17,5 +17,5 @@ export const getApp = async () => {
   );
   await app.init();
 
-  return app.getHttpServer();
+  return app;
 };

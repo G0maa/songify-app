@@ -6,7 +6,7 @@ let app: INestApplication;
 let api: supertest.SuperTest<supertest.Test>;
 beforeAll(async () => {
   app = await getApp();
-  api = supertest(app);
+  api = supertest(app.getHttpServer());
 });
 
 describe('AppController (e2e)', () => {
