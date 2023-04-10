@@ -1,5 +1,5 @@
 import { Test, TestingModule } from '@nestjs/testing';
-import { INestApplication } from '@nestjs/common';
+import { INestApplication, ValidationPipe } from '@nestjs/common';
 import { AppModule } from '../src/app.module';
 
 // This will probably have to reflect main.ts
@@ -10,6 +10,11 @@ export const getApp = async () => {
   }).compile();
 
   const app: INestApplication = moduleFixture.createNestApplication();
+  app.useGlobalPipes(
+    new ValidationPipe({
+      whitelist: true,
+    }),
+  );
   await app.init();
 
   return app.getHttpServer();

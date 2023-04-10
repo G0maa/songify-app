@@ -1,9 +1,9 @@
 import { INestApplication } from '@nestjs/common';
-import supertest, { SuperTest } from 'supertest';
+import * as supertest from 'supertest';
 import { getApp } from './helpers';
 
 let app: INestApplication;
-let api: SuperTest<supertest.Test>;
+let api: supertest.SuperTest<supertest.Test>;
 beforeAll(async () => {
   app = await getApp();
   api = supertest(app);
