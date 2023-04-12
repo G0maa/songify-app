@@ -1,6 +1,11 @@
 // This is your Prisma schema file,
 // learn more about it in the docs: https://pris.ly/d/prisma-schema
 
+// Note: This DB schema is not concerned with scalability and/or other stuff.
+// this was made with a focus on getting the thing to work
+// so take it with a grain of salt.
+// ERD at: https://drive.google.com/file/d/1PIDrM6A2ZlKPwQtyQyxmXJUEZNsOK-x9/view
+
 generator client {
   provider = "prisma-client-js"
 }
@@ -10,6 +15,7 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+// Main entities
 model User {
   id       Int    @id @default(autoincrement())
   username String @unique @db.VarChar(32)
@@ -25,7 +31,94 @@ model User {
   createdAt DateTime @default(now()) @map("created_at")
   updatedAt DateTime @updatedAt @map("updated_at")
 
+  // Relations
+  history   TrackHistory[]
+  favorites TrackFavorites[]
+
   @@map("users")
+}
+
+// Note: The dataset we have has only one artist per track,
+// that's why there isn't a many-to-many relation between tracks and artists.
+model Track {
+  id         Int      @id @default(autoincrement())
+  artistId   Int      @map("artist_id")
+  title      String   @db.VarChar(128)
+  genre      Genre?
+  duration   Int      @db.Integer
+  relaseDate DateTime @map("release_date") @db.Date
+
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  // Relations
+  plays     TrackHistory[]
+  favorites TrackFavorites[]
+
+  artist Artist? @relation(fields: [artistId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+
+  metrics TrackMetrics?
+
+  @@map("tracks")
+}
+
+// Normally this would have more attributes.
+model Artist {
+  id   Int    @id @default(autoincrement())
+  name String @db.VarChar(128)
+
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  // Relations
+  tracks Track[]
+
+  @@map("artists")
+}
+
+// One-to-one relations
+model TrackMetrics {
+  id        Int @id @default(autoincrement())
+  trackId   Int @unique @map("track_id")
+  playCount Int @default(0) @map("play_count") @db.Integer
+  likeCount Int @default(0) @map("like_count") @db.Integer
+
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  // Relations
+  track Track @relation(fields: [trackId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+
+  @@map("track_metrics")
+}
+
+// Many-to-many intermediate tables
+model TrackFavorites {
+  id        Int      @id @default(autoincrement())
+  trackId   Int      @map("track_id")
+  userId    Int      @map("user_id")
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  // Relations
+  user  User  @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  track Track @relation(fields: [trackId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+
+  @@map("users_tracks_favorites")
+}
+
+model TrackHistory {
+  id        Int      @id @default(autoincrement())
+  trackId   Int      @map("track_id")
+  userId    Int      @map("user_id")
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  // Relations
+  user  User  @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  track Track @relation(fields: [trackId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+
+  @@map("users_tracks_history")
 }
 
 // Not exactly sure how does Prisma deal with enums
