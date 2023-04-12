@@ -16,11 +16,11 @@ model User {
   email    String @unique
   password String @db.VarChar(128) // 72 bytes for bcrypt
 
-  firstName      String?   @map("first_name") @db.VarChar(64)
-  lastName       String?   @map("last_name") @db.VarChar(64)
-  gender         String?   @db.VarChar(8)
-  DateOfBirth    DateTime? @map("date_of_birth")
-  favouriteGenre String?   @map("favourite_genre") @db.VarChar(32)
+  firstName     String?   @map("first_name") @db.VarChar(64)
+  lastName      String?   @map("last_name") @db.VarChar(64)
+  gender        Gender?
+  birthDate     DateTime? @map("birth_date") @db.Date
+  favoriteGenre Genre?    @map("favorite_genre")
 
   createdAt DateTime @default(now()) @map("created_at")
   updatedAt DateTime @updatedAt @map("updated_at")
@@ -29,7 +29,20 @@ model User {
 }
 
 // Not exactly sure how does Prisma deal with enums
-// enum Gender {
-//   Male
-//   Female
-// }
+enum Gender {
+  Male
+  Female
+  Other
+}
+
+// Music genres
+enum Genre {
+  Rock
+  Pop
+  Jazz
+  Country
+  HipHop
+  Reggae
+  Blues
+  Other
+}

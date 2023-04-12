@@ -3,6 +3,7 @@ import * as supertest from 'supertest';
 import { getApp } from './helpers';
 import { JwtService } from '@nestjs/jwt';
 import { CreateUserDto, LoginUserDto } from 'src/auth/dto';
+import { Gender, MusicGenre } from 'src/types';
 
 let app: INestApplication;
 let api: supertest.SuperTest<supertest.Test>;
@@ -13,7 +14,7 @@ beforeAll(async () => {
 
 const baseUrl = '/auth';
 describe('Testing auth route /auth/register', () => {
-  it('POST /auth/register with correct body', async () => {
+  it('POST /auth/register with with required body attributes only', async () => {
     const user: CreateUserDto = {
       email: 'example@email.com',
       username: 'username',
@@ -29,6 +30,35 @@ describe('Testing auth route /auth/register', () => {
     expect(body).toHaveProperty('email');
     expect(body).toHaveProperty('username');
     expect(body).not.toHaveProperty('password');
+  });
+
+  it('POST /auth/register with full body attributes', async () => {
+    const user: CreateUserDto = {
+      email: 'example0@email.com',
+      username: 'username0',
+      password: 'password',
+      firstName: 'firstName',
+      lastName: 'lastName',
+      birthDate: '1995-01-01',
+      favoriteGenre: MusicGenre.Pop,
+      gender: Gender.Male,
+    };
+
+    const { body } = await api
+      .post(`${baseUrl}/register`)
+      .send(user)
+      .expect(201);
+
+    expect(body).toHaveProperty('id');
+    expect(body).toHaveProperty('email');
+    expect(body).toHaveProperty('username');
+    expect(body).not.toHaveProperty('password');
+
+    // Full body attributes checks
+    expect(body.gender).toBe(user.gender);
+    expect(body.favoriteGenre).toBe(user.favoriteGenre);
+    // returns: e.g. "1995-01-01T00:00:00.000Z"
+    // expect(body.birthDate).toBe(user.birthDate);
   });
 });
 
