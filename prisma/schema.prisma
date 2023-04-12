@@ -41,12 +41,12 @@ model User {
 // Note: The dataset we have has only one artist per track,
 // that's why there isn't a many-to-many relation between tracks and artists.
 model Track {
-  id         Int      @id @default(autoincrement())
-  artistId   Int      @map("artist_id")
-  title      String   @db.VarChar(128)
-  genre      Genre?
-  duration   Int      @db.Integer
-  relaseDate DateTime @map("release_date") @db.Date
+  id          Int      @id @default(autoincrement())
+  artistId    Int      @map("artist_id")
+  title       String   @db.VarChar(256) // Some tracks have long titles
+  genre       Genre?
+  duration    Int?     @db.Integer
+  releaseDate DateTime @map("release_date") @db.Date
 
   createdAt DateTime @default(now()) @map("created_at")
   updatedAt DateTime @updatedAt @map("updated_at")
