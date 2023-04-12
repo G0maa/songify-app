@@ -11,7 +11,7 @@
   },
   "collectCoverage": true,
   "collectCoverageFrom": ["**/src/**"],
-  "coverageDirectory": "../coverage",
+  "coverageDirectory": "coverage",
   "coverageProvider": "v8",
   "coverageReporters": ["lcov", "text", "text-summary"]
 }
