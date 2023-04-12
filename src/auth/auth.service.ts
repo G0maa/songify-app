@@ -41,6 +41,7 @@ export class AuthService {
   // I am not sure if this fulfils "separation of concerns".
   async register(dto: CreateUserDto) {
     dto.password = await this.hashPassword(dto.password);
+    dto.birthDate = new Date(dto.birthDate);
 
     const user = await this.prismaService.user.create({ data: dto });
 

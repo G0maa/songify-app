@@ -8,6 +8,7 @@ import {
   IsEnum,
   IsDateString,
 } from 'class-validator';
+import { Gender, MusicGenre } from 'src/types';
 
 export class CreateUserDto {
   @IsNotEmpty()
@@ -40,15 +41,16 @@ export class CreateUserDto {
   // to-do move enums to a separate file, e.g. types.ts
   @IsOptional()
   @IsString()
-  @IsEnum({ Male: 'Male', Female: 'Female' })
-  gender?: string;
+  @IsEnum(Gender)
+  gender?: Gender;
 
+  // Note: I do the transofrmation to Date auth.service.ts
   @IsOptional()
   @IsDateString()
-  DateOfBirth?: string;
+  birthDate?: string | Date;
 
   // to-do make this an enum
   @IsOptional()
-  @IsEnum({})
-  favouriteGenre?: string;
+  @IsEnum(MusicGenre)
+  favoriteGenre?: MusicGenre;
 }
