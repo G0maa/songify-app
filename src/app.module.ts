@@ -6,6 +6,9 @@ import { PrismaModule } from './prisma/prisma.module';
 import { MorganMiddleware } from './common/middleware/morgan.middleware';
 import { AuthModule } from './auth/auth.module';
 import { UserModule } from './user/user.module';
+import { TrackModule } from './track/track.module';
+import { SearchModule } from './search/search.module';
+import { RequsetLoggerMiddleware } from './common/middleware/reguestLogger.middleware';
 
 // Mhm... should the ConfigModule be global?
 @Module({
@@ -14,12 +17,15 @@ import { UserModule } from './user/user.module';
     PrismaModule,
     AuthModule,
     UserModule,
+    TrackModule,
+    SearchModule,
   ],
   controllers: [AppController],
   providers: [AppService],
 })
 export class AppModule implements NestModule {
   configure(consumer: MiddlewareConsumer) {
-    consumer.apply(MorganMiddleware).forRoutes('*');
+    // to-do will eventually need to use winston
+    consumer.apply(MorganMiddleware, RequsetLoggerMiddleware).forRoutes('*');
   }
 }
