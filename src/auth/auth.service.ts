@@ -1,9 +1,10 @@
 import * as bcrypt from 'bcrypt';
 import { ForbiddenException, Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
-import { CreateUserDto, LoginUserDto } from './dto';
+import { ResetPasswordDto, CreateUserDto, LoginUserDto } from './dto';
 import { JwtService } from '@nestjs/jwt';
 import { PrismaService } from 'src/prisma/prisma.service';
+import { use } from 'passport';
 
 @Injectable()
 export class AuthService {
@@ -11,7 +12,7 @@ export class AuthService {
     private prismaService: PrismaService,
     private readonly configService: ConfigService,
     private jwtService: JwtService,
-  ) {}
+  ) { }
 
   // Generate a JWT token for the user.
   async login(dto: LoginUserDto) {
@@ -73,5 +74,28 @@ export class AuthService {
 
   private async verifyPassword(password: string, hashedPassword: string) {
     return bcrypt.compare(password, hashedPassword);
+  }
+  async resetPassword(resetPasswordDto: ResetPasswordDto) {
+    const { email, oldPassword, newPassword } = resetPasswordDto;
+
+    const user = await this.prismaService.user.findUnique({ where: { email } });
+
+    if (!user) {
+      throw new ForbiddenException('User not found');
+    }
+
+    const isPasswordValid = await bcrypt.compare(oldPassword, user.password);
+
+    if (!isPasswordValid) {
+      throw new ForbiddenException('Invalid password');
+    }
+
+    const hashedPassword = await bcrypt.hash(newPassword, 10);
+
+    await this.prismaService.user.update({
+      where: { email },
+      data: { password: hashedPassword },
+    });
+    return "Password Update completely";
   }
 }
