@@ -13,7 +13,7 @@
     "test:debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --runInBand",
     "db:push": "yarn prisma db push --force-reset --accept-data-loss && yarn prisma db seed",
     "db:reset": "yarn prisma migrate reset --force",
-    "test": "yarn run db:migrate && yarn run db:reset && jest --verbose --runInBand --forceExit",
+    "test": "yarn run db:push && jest --verbose --runInBand --forceExit",
     "db:up": "docker compose up -d",
     "format": "prettier --check \"src/**/*.ts\" \"test/**/*.ts\"",
     "lint": "eslint \"{src,apps,libs,test}/**/*.ts\""
