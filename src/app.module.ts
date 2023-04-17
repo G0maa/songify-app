@@ -9,6 +9,7 @@ import { UserModule } from './user/user.module';
 import { TrackModule } from './track/track.module';
 import { SearchModule } from './search/search.module';
 import { RequsetLoggerMiddleware } from './common/middleware/reguestLogger.middleware';
+import { HistoryModule } from './history/history.module';
 
 // Mhm... should the ConfigModule be global?
 @Module({
@@ -19,6 +20,7 @@ import { RequsetLoggerMiddleware } from './common/middleware/reguestLogger.middl
     UserModule,
     TrackModule,
     SearchModule,
+    HistoryModule,
   ],
   controllers: [AppController],
   providers: [AppService],

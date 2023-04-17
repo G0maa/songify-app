@@ -1,10 +1,14 @@
 import { Injectable } from '@nestjs/common';
 import { PrismaService } from 'src/prisma/prisma.service';
 import { GetTrackDto } from './dto/get-track.dto';
+import { HistoryService } from 'src/history/history.service';
 
 @Injectable()
 export class TrackService {
-  constructor(private prismaService: PrismaService) {}
+  constructor(
+    private prismaService: PrismaService,
+    private historyService: HistoryService,
+  ) {}
 
   // should I flatten the result object?
   async getTrack(param: GetTrackDto, userId: number | null) {
@@ -21,7 +25,7 @@ export class TrackService {
     });
 
     if (track && userId) {
-      console.log('todo: add track to user history');
+      await this.historyService.addTrackToHistory(userId, track.id);
       console.log('todo: update track metrics');
     }
 
