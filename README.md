@@ -13,6 +13,16 @@
 - PassportJS
 - ...
 
+## Live Version:
+
+- To-do...
+
+## Prerequisites:
+
+1. Docker for running PostgreSQL (or any other source for a PostgreSQL instance).
+2. NodeJS
+3. Install Yarn & Nest CLI `npm install --global yarn @nestjs/cli`
+
 ## Installation
 
 ```bash
@@ -22,19 +32,20 @@ $ yarn install
 ## Running the app
 
 ```bash
-# development
-$ yarn run start
+# For env vars
+$ mv .sample.env .env
 
-# watch mode
-$ yarn run start:dev
+# Creating docker container
+$ yarn run db:up
 
-# production mode
-$ yarn run start:prod
-```
+# Pushing db schema to docker
+$ yarn run db:push
 
-## Test
-
-```bash
-# API Testing
+# running api tests and making sure everything is ok
+# note: I use the same container for testing and development.
 $ yarn run test
+
+# running server
+# You can access API Docs at http://lcoalhost:8080/api-docs
+$ yarn run dev
 ```

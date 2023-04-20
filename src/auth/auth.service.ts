@@ -4,6 +4,7 @@ import { ConfigService } from '@nestjs/config';
 import { CreateUserDto, LoginUserDto } from './dto';
 import { JwtService } from '@nestjs/jwt';
 import { PrismaService } from 'src/prisma/prisma.service';
+import { ResetPasswordDto } from './dto/reset-password.dto';
 
 @Injectable()
 export class AuthService {
@@ -48,6 +49,38 @@ export class AuthService {
     user.password = undefined;
 
     return user;
+  }
+
+  // You can't invalidate the JWT Token,
+  // Frontend should delete the token.
+  async resetPassword(dto: ResetPasswordDto, userId: number) {
+    const user = await this.prismaService.user.findUnique({
+      where: { id: userId },
+    });
+
+    if (!user) {
+      throw new ForbiddenException('Invalid credentials');
+    }
+
+    const isPasswordValid = await this.verifyPassword(
+      dto.currentPassword,
+      user.password,
+    );
+
+    if (!isPasswordValid) {
+      throw new ForbiddenException('Invalid credentials');
+    }
+
+    const hashedPassword = await this.hashPassword(dto.newPassword);
+
+    const updatedUser = await this.prismaService.user.update({
+      where: { id: userId },
+      data: { password: hashedPassword },
+    });
+
+    updatedUser.password = undefined;
+
+    return updatedUser;
   }
 
   private async signToken(id: number, username: string) {

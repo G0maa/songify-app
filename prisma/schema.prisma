@@ -104,6 +104,7 @@ model TrackFavorites {
   user  User  @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: Cascade)
   track Track @relation(fields: [trackId], references: [id], onDelete: Cascade, onUpdate: Cascade)
 
+  @@unique(fields: [userId, trackId], name: "userId_trackId")
   @@map("users_tracks_favorites")
 }
 
