@@ -11,6 +11,7 @@ import { SearchModule } from './search/search.module';
 import { RequsetLoggerMiddleware } from './common/middleware/reguestLogger.middleware';
 import { HistoryModule } from './history/history.module';
 import { TrendModule } from './trend/trend.module';
+import { FavoriteModule } from './favorite/favorite.module';
 
 // Mhm... should the ConfigModule be global?
 @Module({
@@ -23,6 +24,7 @@ import { TrendModule } from './trend/trend.module';
     SearchModule,
     HistoryModule,
     TrendModule,
+    FavoriteModule,
   ],
   controllers: [AppController],
   providers: [AppService],
