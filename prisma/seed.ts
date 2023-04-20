@@ -35,11 +35,17 @@ async function seed() {
       genre: record.genre,
       releaseDate: new Date(record.release_date),
       artistId: artists[artistName].id,
+      metrics: { create: {} },
     });
   }
-  await prisma.track.createMany({
-    data: tracks,
-  });
+
+  // createMany doesn't support nested create,
+  // I assume this is a DB limitation.
+  for (const track of tracks) {
+    await prisma.track.create({
+      data: track,
+    });
+  }
 
   await prisma.$disconnect();
 }
