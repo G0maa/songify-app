@@ -1,18 +1,18 @@
-import { Controller, Get } from '@nestjs/common';
-import { ApiTags } from '@nestjs/swagger';
+import { Controller, Get, UseGuards } from '@nestjs/common';
+import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 import { RecommendService } from './recommend.service';
+import { JwtGuard } from 'src/auth/guard';
+import { GetUser } from 'src/auth/decorator';
 
 @ApiTags('Recommend')
 @Controller('recommend')
 export class RecommendController {
   constructor(private recommendService: RecommendService) {}
-  @Get('pub')
-  publishTest() {
-    return this.recommendService.publishTest();
-  }
-  @Get('getMsg')
-  getMsg() {
-    // const requestId = '123';
-    return this.recommendService.getMsg();
+
+  @UseGuards(JwtGuard)
+  @ApiBearerAuth()
+  @Get()
+  getMsg(@GetUser('id') id: number) {
+    return this.recommendService.getRecommended(id);
   }
 }
