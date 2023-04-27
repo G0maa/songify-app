@@ -27,7 +27,6 @@ services:
     networks:
       - elastic
     environment:
-    #   ELASTICSEARCH_URL: http://es-node01:9200
       - bootstrap.memory_lock=true
       - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
 
