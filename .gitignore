@@ -39,3 +39,6 @@ lerna-debug.log*
 
 # prisma migrations
 prisma/migrations
+
+# elasticsearch
+/elastic-search/http_ca.crt
