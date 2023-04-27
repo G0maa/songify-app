@@ -1,34 +1,36 @@
-version: '3.1'
+# Got some assistance from ChatGPT & https://stackoverflow.com/questions/62037965/about-docker-containers-exit-when-docker-compose-up
+# Don't forget to sudo sysctl -w vm.max_map_count=262144
+version: '3'
 services:
-  elasticsearch:
-    image: docker.elastic.co/elasticsearch/elasticsearch:8.7.0-amd64
-    # environment:
-      # discovery.type: single-node
-      # cluster.name: elasticsearch
-      # bootstrap.memory_lock: true
-      # ES_JAVA_OPTS: '-Xms512m -Xmx512m'
-      # xpack.security.enabled: true # SRC: https://www.elastic.co/guide/en/observability/current/ingest-logs-metrics-uptime.html
-      # xpack.security.authc.api_key.enabled: true # SRC: https://www.elastic.co/guide/en/observability/current/ingest-logs-metrics-uptime.html
-    container_name: elasticsearch
+  es-node01:
+    container_name: es-node01
+    image: docker.elastic.co/elasticsearch/elasticsearch:8.7.0
+    environment:
+      - bootstrap.memory_lock=true
+      - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
+    ulimits:
+      memlock:
+        soft: -1
+        hard: -1
     ports:
-      - 9200:9200
-      - 9300:9300
+      - "9200:9200"
+      - "9300:9300"
     networks:
       - elastic
-  kibana:
-    image: docker.elastic.co/kibana/kibana:8.7.0-amd64
-    # environment:
-      # elasticsearch.username: "kibana_system" 
-      # xpack.encryptedSavedObjects.encryptionKey: "MtX46c4cmmoojBF+Hi=l"
-      # ELASTICSEARCH_HOSTS: '["https://elasticsearch:9200"]'
-    container_name: kibana
+    stdin_open: true
+    tty: true
+  kibana-01:
+    container_name: kibana-01
+    image: docker.elastic.co/kibana/kibana:8.7.0
     ports:
-      - 5601:5601
-  # metricbeat:
-  #   image: docker.elastic.co/beats/metricbeat-oss:8.7.0-amd64
-  #   environment:
-  #     - setup.kibana.host=kibana:5601
-  #     - output.elasticsearch.hosts=elasticsearch:9200
-  #   container_name: songify-dev-metricbeat
+      - "5601:5601"
+    networks:
+      - elastic
+    environment:
+    #   ELASTICSEARCH_URL: http://es-node01:9200
+      - bootstrap.memory_lock=true
+      - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
+
 networks:
   elastic:
+    driver: bridge

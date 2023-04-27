@@ -7,6 +7,7 @@
 4. `docker cp es-node01:/usr/share/elasticsearch/config/certs/http_ca.crt`
 5. verify it works. => `curl --cacert http_ca.crt -u elastic https://localhost:9200` & paste your password
 6. To reset enrollment token (if needed): docker exec (google it) & `./bin/elasticsearch-create-enrollment-token -s kibana`
+7. To reset password `./bin/elasticsearch-reset-password -u elastic`
 7. `docker run --name kibana-01 --net elastic -p 5601:5601 docker.elastic.co/kibana/kibana:8.7.0`
 8. Go to the url and provide enrollment token then username & password.
 9. You've got Elasticsearch & Kibana working.
