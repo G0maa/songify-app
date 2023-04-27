@@ -10,3 +10,10 @@ services:
     container_name: songify-dev-db
     ports:
       - 5432:5432
+  api:
+    image: songify-api-img
+    build:
+      context: .
+      dockerfile: Dockerfile
+    environment:
+      - DATABASE_URL=postgres://root:sekret@songify-dev-db:5432/postgres?schema=public
