@@ -9,6 +9,11 @@ metricbeat.modules:
       - "api"
 
 output.elasticsearch:
-  hosts: ["https://elastic-search_elastic:9200"] # Here I tried host from the container
+  hosts: ["https://es-node01:9200"] # Here I tried host from the container
   username: "elastic"
   password: "pass"
+  ssl:
+    enabled: true
+    certificate_authorities: ["http_ca.crt"] # can't because we're inside container & this is for localhost
+    
+        
