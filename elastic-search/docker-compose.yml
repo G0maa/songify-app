@@ -1,25 +1,41 @@
+# SRC: https://youtu.be/j61yfEfeJAE
+# Note: I'm running this from codespaces 8GB Ram version.
+# 0. Docker compose won't generate auto-configuration passwords.
+# 1. You might have to run: sysctl -w vm.max_map_count=262144
+# 2. docker network create elastic
+# 3. docker run --name es-node01 --net elastic -p 9200:9200 -p 9300:9300 -t docker.elastic.co/elasticsearch/elasticsearch:8.7.0
+# 4. docker cp es-node01:/usr/share/elasticsearch/config/certs/http_ca.crt
 version: '3.1'
 services:
   elasticsearch:
     image: docker.elastic.co/elasticsearch/elasticsearch:8.7.0-amd64
-    environment:
-      - discovery.type=single-node
-      - cluster.name=elasticsearch
-      - bootstrap.memory_lock=true
-      - 'ES_JAVA_OPTS=-Xms512m -Xmx512m'
-    container_name: songify-dev-elasticsearch
+    # environment:
+      # discovery.type: single-node
+      # cluster.name: elasticsearch
+      # bootstrap.memory_lock: true
+      # ES_JAVA_OPTS: '-Xms512m -Xmx512m'
+      # xpack.security.enabled: true # SRC: https://www.elastic.co/guide/en/observability/current/ingest-logs-metrics-uptime.html
+      # xpack.security.authc.api_key.enabled: true # SRC: https://www.elastic.co/guide/en/observability/current/ingest-logs-metrics-uptime.html
+    container_name: elasticsearch
     ports:
       - 9200:9200
+      - 9300:9300
+    networks:
+      - elastic
   kibana:
     image: docker.elastic.co/kibana/kibana:8.7.0-amd64
-    environment:
-      - ELASTICSEARCH_HOSTS=http://elasticsearch:9200
-    container_name: songify-dev-kibana
+    # environment:
+      # elasticsearch.username: "kibana_system" 
+      # xpack.encryptedSavedObjects.encryptionKey: "MtX46c4cmmoojBF+Hi=l"
+      # ELASTICSEARCH_HOSTS: '["https://elasticsearch:9200"]'
+    container_name: kibana
     ports:
       - 5601:5601
-  metricbeat:
-    image: docker.elastic.co/beats/metricbeat-oss:8.7.0-amd64
-    environment:
-      - setup.kibana.host=kibana:5601
-      - output.elasticsearch.hosts=elasticsearch:9200
-    container_name: songify-dev-metricbeat
+  # metricbeat:
+  #   image: docker.elastic.co/beats/metricbeat-oss:8.7.0-amd64
+  #   environment:
+  #     - setup.kibana.host=kibana:5601
+  #     - output.elasticsearch.hosts=elasticsearch:9200
+  #   container_name: songify-dev-metricbeat
+networks:
+  elastic:
