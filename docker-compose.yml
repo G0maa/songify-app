@@ -17,3 +17,5 @@ services:
       dockerfile: Dockerfile
     environment:
       - DATABASE_URL=postgres://root:sekret@songify-dev-db:5432/postgres?schema=public
+    ports:
+      - 8080:8080
