@@ -1,0 +1,14 @@
+metricbeat.modules:
+- module: docker
+  metricsets: ["container"]
+  hosts: ["unix:///var/run/docker.sock"]
+  enabled: true
+  period: 10s
+  containers:
+    ids:
+      - "api"
+
+output.elasticsearch:
+  hosts: ["http://localhost:9200"]
+  # username: "elastic"
+  # password: "changeme"

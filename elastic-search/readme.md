@@ -1,5 +1,5 @@
 # SRC: https://youtu.be/j61yfEfeJAE
-* Note: I'm running this from codespaces 8GB Ram version.
+* Note: I'm running this from codespaces 8GB Ram version, moved to my own machine, seems 8 gigs (or CPU) isn't enough.
 0. Docker compose won't generate auto-configuration passwords.
 1. You might have to run: `sysctl -w vm.max_map_count=262144`
 2. `docker network create elastic`

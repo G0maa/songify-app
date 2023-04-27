@@ -19,3 +19,22 @@ services:
       - DATABASE_URL=postgres://root:sekret@songify-dev-db:5432/postgres?schema=public
     ports:
       - 8080:8080
+  metricbeat:
+    image: docker.elastic.co/beats/metricbeat-oss:8.7.0
+    user: root
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - ./elastic-search/metricbeat.yml:/usr/share/metricbeat/metricbeat.yml
+    environment:
+      - ELASTICSEARCH_HOSTS=http://localhost:9200
+      - KIBANA_HOST=http://localhost:5601
+      # - LOGSTASH_HOST=http://logstash:5044
+      - ENABLE_CONTAINER_MODULE=true
+      - MODULES=container
+    depends_on:
+      - api
+    container_name: songify-dev-metricbeat
+
+# networks:
+#   external:
+#     elastic:
