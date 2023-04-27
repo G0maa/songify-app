@@ -9,6 +9,6 @@ metricbeat.modules:
       - "api"
 
 output.elasticsearch:
-  hosts: ["http://localhost:9200"]
-  # username: "elastic"
-  # password: "changeme"
+  hosts: ["https://elastic-search_elastic:9200"] # Here I tried host from the container
+  username: "elastic"
+  password: "pass"

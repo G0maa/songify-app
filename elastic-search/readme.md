@@ -11,3 +11,7 @@
 7. `docker run --name kibana-01 --net elastic -p 5601:5601 docker.elastic.co/kibana/kibana:8.7.0`
 8. Go to the url and provide enrollment token then username & password.
 9. You've got Elasticsearch & Kibana working.
+---
+# For metricbeat
+1. `chmod go-w metricbeat.yml` to make it re-writeable again `chmod a+w metricbeat.yml`
+2. `chown 0 metricbeat.yml` (in my case it's 0)
