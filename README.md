@@ -4,6 +4,19 @@
 # Songify-app | api
 
 - A Music recommendation website, this repo covers the API part.
+- Features:
+  - Searching for Tracks
+  - Trending Tracks
+  - User
+    - Authentication
+    - History
+    - Favorites
+    - Profile
+- Currently working on:
+  - Recommending tracks based on content-based filtering
+    - Use of RabbitMQ as a message broker between NestJS App & Python ML Model
+  - Search using ElasticSearch
+  - Deployment on AWS
 
 ## Tech stack
 
@@ -11,6 +24,7 @@
 - Prisma
 - PostgreSQL
 - PassportJS
+- RabbitMQ
 - ...
 
 ## Live Version:
