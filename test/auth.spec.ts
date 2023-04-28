@@ -12,7 +12,7 @@ beforeAll(async () => {
   api = supertest(app.getHttpServer());
 });
 
-const baseUrl = '/auth';
+const baseUrl = '/api/v1/auth';
 describe('Testing auth route /auth/register', () => {
   it('POST /auth/register with with required body attributes only', async () => {
     const user: CreateUserDto = {
@@ -86,7 +86,7 @@ describe('Testing auth route /user/profile', () => {
     const { access_token } = res.body;
 
     const { body } = await api
-      .get(`/user/profile`)
+      .get(`/api/v1/user/profile`)
       .set({ Authorization: `Bearer ${access_token}` })
       .expect(200);
 
@@ -104,14 +104,14 @@ describe('Testing auth route /user/profile', () => {
     );
 
     await api
-      .get(`/user/profile`)
+      .get(`/api/v1/user/profile`)
       .set({ Authorization: `Bearer ${fakeToken}` })
       .expect(401);
   });
 
   it('GET /user/profile with invalid token', async () => {
     await api
-      .get(`/user/profile`)
+      .get(`/api/v1/user/profile`)
       .set({ Authorization: 'Bearer invalidToken' })
       .expect(401);
   });
