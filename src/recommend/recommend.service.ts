@@ -21,10 +21,10 @@ export class RecommendService {
       select: { trackId: true, createdAt: true },
     });
 
-    const favorites = await this.prismaService.trackFavorites.findMany({
-      where: { userId: id },
-      select: { trackId: true },
-    });
+    // const favorites = await this.prismaService.trackFavorites.findMany({
+    //   where: { userId: id },
+    //   select: { trackId: true },
+    // });
 
     // to-do: merge history & favorites
     // move step by step, they're both sorted by ?something?
