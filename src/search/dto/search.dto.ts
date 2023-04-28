@@ -15,13 +15,13 @@ export class SearchQueryDto {
 
   @IsOptional()
   @IsEnum(MusicGenre)
-  genre: MusicGenre;
+  genre?: MusicGenre;
 
   @IsOptional()
   @IsNumberString()
-  pageNumber: string;
+  pageNumber?: string;
 
   @IsOptional()
   @IsNumberString()
-  pageSize: string;
+  pageSize?: string;
 }

@@ -8,7 +8,13 @@ import {
 } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { LoginUserDto, CreateUserDto } from './dto';
-import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
+import {
+  ApiBadRequestResponse,
+  ApiBearerAuth,
+  ApiOkResponse,
+  ApiTags,
+  ApiUnauthorizedResponse,
+} from '@nestjs/swagger';
 import { ApiRegisterDocs } from './docs/register.docs';
 import { ApiLoginDocs } from './docs/login.docs';
 import { GetUser } from './decorator';
@@ -38,7 +44,11 @@ export class AuthController {
   }
 
   @UseGuards(JwtGuard)
+  @HttpCode(HttpStatus.OK)
   @ApiBearerAuth()
+  @ApiOkResponse({ description: 'Password changed sucessfullly' })
+  @ApiBadRequestResponse({ description: 'Invalid body' })
+  @ApiUnauthorizedResponse({ description: 'User unauthenticated' })
   @Post('reset-password')
   resetPassword(@Body() dto: ResetPasswordDto, @GetUser('id') userId: number) {
     return this.authService.resetPassword(dto, userId);
