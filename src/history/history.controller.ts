@@ -6,7 +6,10 @@ import { JwtGuard } from 'src/auth/guard';
 import { GetUser } from 'src/auth/decorator';
 
 @ApiTags('History')
-@Controller('history')
+@Controller({
+  path: 'history',
+  version: '1',
+})
 export class HistoryController {
   constructor(private historyService: HistoryService) {}
 

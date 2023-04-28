@@ -6,7 +6,10 @@ import { OptionalJwtGuard } from 'src/auth/guard/optional-jwt.guard';
 import { GetUser } from 'src/auth/decorator';
 
 @ApiTags('Track')
-@Controller('track')
+@Controller({
+  path: 'track',
+  version: '1',
+})
 export class TrackController {
   constructor(private trackService: TrackService) {}
 

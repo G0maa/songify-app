@@ -4,7 +4,10 @@ import { TrendService } from './trend.service';
 import { GetTrendDto } from './dto/get-trend.dto';
 
 @ApiTags('Trend')
-@Controller('trend')
+@Controller({
+  path: 'trend',
+  version: '1',
+})
 export class TrendController {
   constructor(private trendService: TrendService) {}
 

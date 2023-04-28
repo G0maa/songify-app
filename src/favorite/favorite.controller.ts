@@ -15,10 +15,13 @@ import { GetUser } from 'src/auth/decorator';
 import { GetAllFavoritesDto } from './dto/get-all-favorite.dto';
 import { DeleteFavoriteDto } from './dto/delete-favorite.dto';
 
-@ApiTags('favorite')
+@ApiTags('Favorite')
 @ApiBearerAuth()
 @UseGuards(JwtGuard)
-@Controller('favorites')
+@Controller({
+  path: 'favorite',
+  version: '1',
+})
 export class FavoriteController {
   constructor(private readonly favoriteService: FavoriteService) {}
 
