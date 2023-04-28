@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { PrismaService } from 'src/prisma/prisma.service';
 import { GetTrackDto } from './dto/get-track.dto';
 import { HistoryService } from 'src/history/history.service';
@@ -29,6 +29,11 @@ export class TrackService {
     if (track) {
       await this.trendService.updateTrend(track.id);
       if (userId) await this.historyService.addTrackToHistory(userId, track.id);
+    } else {
+      throw new NotFoundException({
+        statusCode: 404,
+        message: 'Resource not found',
+      });
     }
 
     return track;

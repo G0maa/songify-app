@@ -7,7 +7,10 @@ import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 import { ApiGetProfileDocs } from './docs/getProfile.docs';
 
 @ApiTags('User')
-@Controller('user')
+@Controller({
+  path: 'user',
+  version: '1',
+})
 export class UserController {
   constructor(private userService: UserService) {}
 
