@@ -1,0 +1,35 @@
+filebeat.inputs:
+  - type: container
+    enabled: true
+    paths:
+      - '/var/log/containers/*.log'
+      # - '/var/lib/docker/containers/*/*.log'
+    processors:
+      - add_docker_metadata: ~
+
+# filebeat.config:
+#   modules:
+#     path: ${path.config}/modules.d/*.yml
+#     reload.enabled: false
+
+# filebeat.autodiscover:
+#   providers:
+#     - type: docker
+#       hints.enabled: true
+
+# processors:
+#   - add_cloud_metadata: ~
+
+output.elasticsearch:
+  hosts: ['https://es-node01:9200']
+  username: 'elastic'
+  password: '9suIb03*SX512zg=S22S'
+  ssl:
+    enabled: true
+    verification_mode: none
+
+setup.kibana:
+  host: 'http://kibana-01:5601'
+# Slows startup.
+# setup.dashboards:
+#   enabled: true

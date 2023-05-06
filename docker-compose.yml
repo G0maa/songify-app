@@ -6,39 +6,41 @@ services:
     environment:
       POSTGRES_USER: ${POSTGRES_USER}
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
-      # POSTGRES_DB: FSO22_Part13 Default is postgres
+    networks:
+      - elastic
     container_name: songify-dev-db
     ports:
       - 5432:5432
-  api:
-    image: songify-api-img
-    depends_on:
-      - db
-    build:
-      context: .
-      dockerfile: Dockerfile
-    environment:
-      - DATABASE_URL=postgres://root:sekret@songify-dev-db:5432/postgres?schema=public
-    ports:
-      - 8080:8080
-  metricbeat:
-    image: docker.elastic.co/beats/metricbeat-oss:8.7.0
-    user: root
-    volumes:
-      - /var/run/docker.sock:/var/run/docker.sock
-      - ./elastic-search/metricbeat.yml:/usr/share/metricbeat/metricbeat.yml
-    environment:
-      # - ELASTICSEARCH_HOSTS=https://es-node01:9200
-      # - KIBANA_HOST=https://localhost:5601
-      # - LOGSTASH_HOST=http://logstash:5044
-      - ENABLE_CONTAINER_MODULE=true
-      - MODULES=container
-    depends_on:
-      - api
-    networks:
-      - elastic-search_elastic
-    container_name: songify-dev-metricbeat
-
-networks:
-  elastic-search_elastic:
-    external: true
+  # api:
+  #   image: songify-api-img
+  #   depends_on:
+  #     - db
+  #   build:
+  #     context: .
+  #     dockerfile: Dockerfile
+  #   environment:
+  #     - DATABASE_URL=postgres://root:sekret@songify-dev-db:5432/postgres?schema=public
+  #   ports:
+  #     - 8080:8080
+  # metricbeat:
+  #   image: docker.elastic.co/beats/metricbeat-oss:8.7.0
+  #   user: root
+  #   volumes:
+  #     - /var/run/docker.sock:/var/run/docker.sock
+  #     - ./elastic-search/metricbeat.yml:/usr/share/metricbeat/metricbeat.yml
+  #   networks:
+  #     - elastic
+  #   container_name: songify-dev-metricbeat
+  # filebeat:
+  #   image: docker.elastic.co/beats/filebeat-oss:8.7.0
+  #   user: root
+  #   volumes:
+  #     - /var/log/containers:/var/log/containers
+  #     - ./elastic-search/filebeat.yml:/usr/share/filebeat/filebeat.yml
+  #   networks:
+  #     - elastic
+  #   container_name: songify-dev-filebeat
+# Note: This netowrk has to be created.
+# networks:
+#   elastic:
+#     external: true
