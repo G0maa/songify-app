@@ -23,3 +23,7 @@
 
 1. `chmod go-w metricbeat.yml` to make it re-writeable again `chmod a+w metricbeat.yml`
 2. `chown 0 metricbeat.yml` (maybe needed)
+
+---
+
+![ES Implementation](ES-Naive.png)
