@@ -7,6 +7,10 @@ import { ElasticsearchModule } from '@nestjs/elasticsearch';
   imports: [
     ElasticsearchModule.register({
       node: 'https://localhost:9200',
+      auth: {
+        username: 'elastic',
+        password: 'changeme',
+      },
       tls: {
         rejectUnauthorized: false,
       },
