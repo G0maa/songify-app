@@ -11,6 +11,17 @@ services:
     container_name: songify-dev-db
     ports:
       - 5432:5432
+  messageQueue:
+    image: rabbitmq:3.10-management-alpine
+    restart: always
+    environment:
+      RABBITMQ_DEFAULT_USER: ${RABBITMQ_DEFAULT_USER}
+      RABBITMQ_DEFAULT_PASS: ${RABBITMQ_DEFAULT_PASS}
+    container_name: songify-dev-message-queue
+    ports:
+      - 5672:5672
+      - 15672:15672
+  # Extras for elasticsearch
   # api:
   #   image: songify-api-img
   #   depends_on:

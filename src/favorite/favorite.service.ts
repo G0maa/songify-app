@@ -9,7 +9,7 @@ export class FavoriteService {
   constructor(private prismaService: PrismaService) {}
 
   async create(createFavoriteDto: CreateFavoriteDto, userId: number) {
-    const trackId = parseInt(createFavoriteDto.trackId);
+    const { trackId } = createFavoriteDto;
 
     return this.prismaService.trackFavorites.create({
       data: { trackId, userId },
@@ -22,12 +22,27 @@ export class FavoriteService {
       skip,
       take,
       where: { userId },
+      select: {
+        id: true,
+        track: {
+          select: {
+            id: true,
+            title: true,
+            genre: true,
+            duration: true,
+            releaseDate: true,
+            artist: { select: { name: true } },
+          },
+        },
+      },
     });
   }
 
   async remove(id: number, userId: number) {
-    return this.prismaService.trackFavorites.delete({
+    await this.prismaService.trackFavorites.delete({
       where: { userId_trackId: { trackId: id, userId } },
     });
+
+    return;
   }
 }

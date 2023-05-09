@@ -1,6 +1,7 @@
-import { IsNumberString } from 'class-validator';
+import { IsNumber, IsPositive } from 'class-validator';
 
 export class CreateFavoriteDto {
-  @IsNumberString()
-  trackId: string;
+  @IsNumber()
+  @IsPositive() // to-do issue #20: use a correct max value
+  trackId: number;
 }
