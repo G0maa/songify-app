@@ -1,0 +1,22 @@
+metricbeat.modules:
+  - module: postgresql
+    enabled: true
+    hosts: ['postgres://root:sekret@db:5432?sslmode=disable']
+    period: 10s
+
+# Proper way to do this (at least locally) is to:
+# Generate a certificate on ES container that is valid... somehow.
+# Error dialing x509: certificate is valid for localhost, 99c07d855cf2, not es-node01
+output.elasticsearch:
+  hosts: ['https://es-node01:9200']
+  username: 'elastic'
+  password: '9suIb03*SX512zg=S22S'
+  ssl:
+    enabled: true
+    verification_mode: none
+
+setup.kibana:
+  host: 'http://kibana-01:5601'
+# Slows startup.
+# setup.dashboards:
+#   enabled: true

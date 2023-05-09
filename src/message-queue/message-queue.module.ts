@@ -1,13 +1,16 @@
 import { Module } from '@nestjs/common';
 import { RabbitMQModule } from '@golevelup/nestjs-rabbitmq';
+import { ConfigService } from '@nestjs/config';
 
-// to-do: read from env file
+// to-do: understand how dynamic modules work
 @Module({
   imports: [
-    RabbitMQModule.forRoot(RabbitMQModule, {
-      uri: 'amqp://localhost:5672',
+    RabbitMQModule.forRootAsync(RabbitMQModule, {
+      useFactory: (configService: ConfigService) => ({
+        uri: configService.get<string>('RABBITMQ_URL'),
+      }),
+      inject: [ConfigService],
     }),
-    MessageQueueModule, // is this needed?
   ],
   exports: [RabbitMQModule],
 })

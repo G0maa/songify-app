@@ -1,0 +1,11 @@
+# docker cp kibana.yml kibana-01:/usr/share/kibana/config/kibana.yml
+# Docker sometiems changes hostnames, so I just disable verification_mode.
+
+# Error example:
+# token to host "https://172.21.0.3:9200": Hostname/IP does not match certificate's altnames: IP: 172.21.0.3 is not in the cert's list: 172.21.0.2, 127.0.0.1
+
+server.host: '0.0.0.0'
+server.shutdownTimeout: '5s'
+# elasticsearch.hosts: ['https://es-node01:9200']
+
+elasticsearch.ssl.verificationMode: none

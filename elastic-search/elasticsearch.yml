@@ -1,0 +1,33 @@
+# To move to the container: (since you might use docker run instead of docker-compose up)
+# docker cp elasticsearch.yml es-node01:/usr/share/elasticsearch/config/elasticsearch.yml
+cluster.name: 'docker-cluster'
+network.host: 0.0.0.0
+
+#----------------------- BEGIN SECURITY AUTO CONFIGURATION -----------------------
+#
+# The following settings, TLS certificates, and keys have been automatically
+# generated to configure Elasticsearch security features on 29-04-2023 08:39:06
+#
+# --------------------------------------------------------------------------------
+
+# Enable security features
+xpack.security.enabled: true
+
+xpack.security.enrollment.enabled: true
+
+# Enable encryption for HTTP API client connections, such as Kibana, Logstash, and Agents
+xpack.security.http.ssl:
+  enabled: true
+  verification_mode: none
+  keystore.path: certs/http.p12
+
+# Enable encryption and mutual authentication between cluster nodes
+xpack.security.transport.ssl:
+  enabled: true
+  verification_mode: none
+  keystore.path: certs/transport.p12
+  truststore.path: certs/transport.p12
+# Create a new cluster with the current node only
+# Additional nodes can still join the cluster later
+cluster.initial_master_nodes: ['es-node01'] # this might be wrong I'm not sure.
+#----------------------- END SECURITY AUTO CONFIGURATION -------------------------
