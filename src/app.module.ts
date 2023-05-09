@@ -12,6 +12,7 @@ import { RequsetLoggerMiddleware } from './common/middleware/reguestLogger.middl
 import { HistoryModule } from './history/history.module';
 import { TrendModule } from './trend/trend.module';
 import { FavoriteModule } from './favorite/favorite.module';
+import { ElasticsearchModule } from './elasticsearch/elasticsearch.module';
 
 // Mhm... should the ConfigModule be global?
 @Module({
@@ -25,6 +26,7 @@ import { FavoriteModule } from './favorite/favorite.module';
     HistoryModule,
     TrendModule,
     FavoriteModule,
+    ElasticsearchModule,
   ],
   controllers: [AppController],
   providers: [AppService],
