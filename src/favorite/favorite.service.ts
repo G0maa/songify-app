@@ -22,6 +22,19 @@ export class FavoriteService {
       skip,
       take,
       where: { userId },
+      select: {
+        id: true,
+        track: {
+          select: {
+            id: true,
+            title: true,
+            genre: true,
+            duration: true,
+            releaseDate: true,
+            artist: { select: { name: true } },
+          },
+        },
+      },
     });
   }
 
