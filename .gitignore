@@ -42,3 +42,6 @@ prisma/migrations
 
 # elasticsearch
 /elastic-search/http_ca.crt
+
+# code snippets
+snippet.ts
