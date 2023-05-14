@@ -16,8 +16,8 @@
     - Using PostgreSQL queries
     - Using ElasticSearch
   - Two versions of recommenndations
-    - Using a pre-made CSV file that was made by [Jonathan Monir]('https://github.com/Jonathan-Monir')
-    - or by connecting to a running insance of [Songify-ML]('https://github.com/G0maa/songify-ml/')
+    - Using a pre-made CSV file that was made by [Jonathan Monir](https://github.com/Jonathan-Monir)
+    - or by connecting to a running insance of [Songify-ML](https://github.com/G0maa/songify-ml/)
 
 ## Currently working on
 
@@ -38,9 +38,10 @@
 
 ## Prerequisites:
 
-1. Docker for running PostgreSQL (or any other source for a PostgreSQL instance).
-2. NodeJS
-3. Install Yarn & Nest CLI `npm install --global yarn @nestjs/cli`
+1. [Docker](https://www.docker.com/) for running PostgreSQL (or any other source for a PostgreSQL instance).
+2. [NodeJS](https://nodejs.org/en)
+3. Optional: ElasticSearch (see `elastic-search` folder) and/or [Songify-ML](https://github.com/G0maa/songify-ml/)
+4. Install Yarn & Nest CLI `npm install --global yarn @nestjs/cli`
 
 ## Installation
 

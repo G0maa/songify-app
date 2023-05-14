@@ -1,6 +1,7 @@
 # SRC: https://youtu.be/j61yfEfeJAE
 
 - Goes without saying that this is for headache-free local development only.
+- 1000x easier to use a cloud instance of Elasticsearch.
 
 1. You might have to run: `sysctl -w vm.max_map_count=262144`, to show `cat /proc/sys/vm/max_map_count`
 2. `docker network create elastic`
