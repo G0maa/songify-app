@@ -14,6 +14,7 @@ export class RecommendController {
   // or GET /user/{user_id}/recommend
   // or GET /recommend/{user_id}
   // or GET /user/recommend (since userId is in the token)
+  // This route is eventually going to get deprecated. to-do
   @Version('1')
   @UseGuards(JwtGuard)
   @ApiBearerAuth()
@@ -22,12 +23,12 @@ export class RecommendController {
     return this.recommendService.getRecommendedV1(id);
   }
 
-  // under-development.
+  // this route needs pagination of some sort.
   @Version('2')
   @UseGuards(JwtGuard)
   @ApiBearerAuth()
   @Get()
   getMsg(@GetUser('id') id: number) {
-    return this.recommendService.getRecommended(id);
+    return this.recommendService.getRecommendedV2(id);
   }
 }

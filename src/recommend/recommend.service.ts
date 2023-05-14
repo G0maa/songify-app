@@ -1,7 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { AmqpConnection } from '@golevelup/nestjs-rabbitmq';
 import { PrismaService } from 'src/prisma/prisma.service';
-import { TrackHistory } from '@prisma/client';
 // Personally I believe a controller/service should not deal with files.
 import * as fs from 'fs';
 import { parse } from 'csv-parse'; // Currently a dev dependency.
@@ -69,41 +68,38 @@ export class RecommendService {
     return recommend;
   }
 
-  async getRecommended(id: number) {
-    // to-do: but is the track favorited?
-    // 1. get all tracks favorited by user
-    // 2. get all tracks in history
-    // then merge them, but how?
-
+  async getRecommendedV2(id: number) {
     const history = await this.prismaService.trackHistory.findMany({
       where: { userId: id },
-      select: { trackId: true, createdAt: true },
+      select: { trackId: true },
     });
 
-    // const favorites = await this.prismaService.trackFavorites.findMany({
-    //   where: { userId: id },
-    //   select: { trackId: true },
-    // });
+    const historySet = new Set<number>();
+    for (const record of history) {
+      historySet.add(record.trackId);
+    }
 
-    // to-do: merge history & favorites
-    // move step by step, they're both sorted by ?something?
+    const historyArr = Array.from(historySet);
 
-    console.log('history: ', history);
-    // Remains on this side:
-    // 1. format history as ML Model expects
-    // 2. after receive response, format response as API expects.
-    // const response = await this.rpcRequest(history);
-    // return response;
-    return 'history logged in server';
+    if (historyArr.length < 5) {
+      return {
+        message:
+          'History enteries are not enough to recommend, must listen to 5+ unique tracks.',
+      };
+    }
+
+    const result = await this.rpcRequest(historyArr);
+
+    return result;
   }
 
   // This publishes a messsage, then waits for a response message too.
   // it gives correlationId & replyTo as properties.
-  private async rpcRequest(history: TrackHistory[]) {
+  private async rpcRequest(history: number[]) {
     const response = await this.amqpConnection.request({
       exchange: '', // default exchange, routingKey is the queue name.
       routingKey: 'rpc-queue', // this is the queue declared in the consumer
-      payload: history,
+      payload: { history },
       timeout: 3000,
     });
     return response;
