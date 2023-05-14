@@ -12,11 +12,16 @@
     - History
     - Favorites
     - Profile
-- Currently working on:
-  - Recommending tracks based on content-based filtering
-    - Use of RabbitMQ as a message broker between NestJS App & Python ML Model
-  - Search using ElasticSearch
-  - Deployment on AWS
+  - Two versions of search
+    - Using PostgreSQL queries
+    - Using ElasticSearch
+  - Two versions of recommenndations
+    - Using a pre-made CSV file that was made by [Jonathan Monir]('https://github.com/Jonathan-Monir')
+    - or by connecting to a running insance of [Songify-ML]('https://github.com/G0maa/songify-ml/')
+
+## Currently working on
+
+- Deployment on AWS
 
 ## Tech stack
 
