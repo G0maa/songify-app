@@ -21,7 +21,9 @@
 
 ## Currently working on
 
-- Deployment on AWS
+- ~~Deployment on AWS~~
+- Utilizing the Projects tab [link](https://github.com/users/G0maa/projects/3/views/1)
+- Separating frontend and backend in a monorepo setting.
 
 ## Tech stack
 
