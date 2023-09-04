@@ -16,12 +16,12 @@ jobs:
       contains(join(toJson(github.event.commits.*.message), ' '), '#skipchecks') != true
     runs-on: ubuntu-latest
     steps:
-      - name: Switch to server directory
-        run: cd server
       - uses: actions/checkout@v3
       - uses: actions/setup-node@v3
         with:
           node-version: 18
+      - name: Switch to server directory
+        run: cd server
       - name: Installing Dependencies
         run: yarn install
       - name: Running ESlint
