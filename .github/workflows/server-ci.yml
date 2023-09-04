@@ -1,4 +1,4 @@
-name: Continuous Integration Pipeline
+name: Server Continuous Integration Pipeline
 
 # src: https://github.com/G0maa/my-school-server/blob/master/.github/workflows/ci.yml
 on:
@@ -16,6 +16,8 @@ jobs:
       contains(join(toJson(github.event.commits.*.message), ' '), '#skipchecks') != true
     runs-on: ubuntu-latest
     steps:
+      - name: Switch to server directory
+        run: cd server
       - uses: actions/checkout@v3
       - uses: actions/setup-node@v3
         with:
