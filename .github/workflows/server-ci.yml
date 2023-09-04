@@ -1,4 +1,4 @@
-name: Continuous Integration Pipeline
+name: Server Continuous Integration Pipeline
 
 # src: https://github.com/G0maa/my-school-server/blob/master/.github/workflows/ci.yml
 on:
@@ -9,6 +9,9 @@ on:
   pull_request:
     branches: [master]
     types: [opened, synchronize]
+defaults:
+  run:
+    working-directory: server
 
 jobs:
   ci:
