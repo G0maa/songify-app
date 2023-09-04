@@ -9,6 +9,9 @@ on:
   pull_request:
     branches: [master]
     types: [opened, synchronize]
+defaults:
+  run:
+    working-directory: server
 
 jobs:
   ci:
@@ -20,8 +23,6 @@ jobs:
       - uses: actions/setup-node@v3
         with:
           node-version: 18
-      - name: Switch to server directory
-        run: cd server
       - name: Installing Dependencies
         run: yarn install
       - name: Running ESlint
