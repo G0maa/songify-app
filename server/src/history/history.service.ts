@@ -7,7 +7,8 @@ import { parsePagination } from 'src/common/helpers/parsePagination.helper';
 export class HistoryService {
   constructor(private prismaService: PrismaService) {}
 
-  async addTrackToHistory(userId: number, trackId: number) {
+  // Note removed async, for $transaction API.
+  addTrackToHistory(userId: number, trackId: number) {
     return this.prismaService.trackHistory.create({
       data: {
         trackId,

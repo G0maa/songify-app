@@ -1,40 +1,45 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { PrismaService } from 'src/prisma/prisma.service';
 import { GetTrackDto } from './dto/get-track.dto';
 import { HistoryService } from 'src/history/history.service';
-import { TrendService } from 'src/trend/trend.service';
+import { Prisma } from '@prisma/client';
 
 @Injectable()
 export class TrackService {
   constructor(
     private prismaService: PrismaService,
     private historyService: HistoryService,
-    private trendService: TrendService,
   ) {}
 
   // should I flatten the result object?
   async getTrack(param: GetTrackDto, userId: number | null) {
-    const track = await this.prismaService.track.findUnique({
-      where: { id: parseInt(param.id) },
-      select: {
-        id: true,
-        title: true,
-        genre: true,
-        duration: true,
-        releaseDate: true,
-        artist: { select: { name: true } },
-      },
-    });
+    const trackId = parseInt(param.id);
 
-    if (track) {
-      await this.trendService.updateTrend(track.id);
-      if (userId) await this.historyService.addTrackToHistory(userId, track.id);
-    } else {
-      throw new NotFoundException({
-        statusCode: 404,
-        message: 'Resource not found',
-      });
-    }
+    const transaction: Prisma.PrismaPromise<any>[] = [
+      this.prismaService.track.update({
+        where: { id: trackId },
+        data: {
+          metrics: {
+            update: { playCount: { increment: 1 } },
+          },
+        },
+        select: {
+          id: true,
+          title: true,
+          genre: true,
+          duration: true,
+          releaseDate: true,
+          artist: { select: { name: true } },
+          metrics: { select: { playCount: true } },
+        },
+      }),
+    ];
+
+    if (userId)
+      transaction.push(this.historyService.addTrackToHistory(userId, trackId));
+
+    // This is not typed.
+    const [track] = await this.prismaService.$transaction(transaction);
 
     return track;
   }

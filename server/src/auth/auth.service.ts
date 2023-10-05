@@ -54,33 +54,38 @@ export class AuthService {
   // You can't invalidate the JWT Token,
   // Frontend should delete the token.
   async resetPassword(dto: ResetPasswordDto, userId: number) {
-    const user = await this.prismaService.user.findUnique({
-      where: { id: userId },
-    });
+    return await this.prismaService.$transaction(
+      async (tx) => {
+        const user = await tx.user.findUnique({
+          where: { id: userId },
+        });
 
-    if (!user) {
-      throw new ForbiddenException('Invalid credentials');
-    }
+        if (!user) {
+          throw new ForbiddenException('Invalid credentials');
+        }
 
-    const isPasswordValid = await this.verifyPassword(
-      dto.currentPassword,
-      user.password,
+        const isPasswordValid = await this.verifyPassword(
+          dto.currentPassword,
+          user.password,
+        );
+
+        if (!isPasswordValid) {
+          throw new ForbiddenException('Invalid credentials');
+        }
+
+        const hashedPassword = await this.hashPassword(dto.newPassword);
+
+        const updatedUser = await tx.user.update({
+          where: { id: userId },
+          data: { password: hashedPassword },
+        });
+
+        updatedUser.password = undefined;
+
+        return updatedUser;
+      },
+      { isolationLevel: 'Serializable' },
     );
-
-    if (!isPasswordValid) {
-      throw new ForbiddenException('Invalid credentials');
-    }
-
-    const hashedPassword = await this.hashPassword(dto.newPassword);
-
-    const updatedUser = await this.prismaService.user.update({
-      where: { id: userId },
-      data: { password: hashedPassword },
-    });
-
-    updatedUser.password = undefined;
-
-    return updatedUser;
   }
 
   private async signToken(id: number, username: string) {

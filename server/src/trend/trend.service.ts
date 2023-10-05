@@ -38,10 +38,11 @@ export class TrendService {
 
   // this function validates nothing,
   // unsure about this.
-  async updateTrend(trackId: number) {
-    await this.prismaService.trackMetrics.update({
-      where: { trackId },
-      data: { playCount: { increment: 1 } },
-    });
-  }
+  // Deprecated, used Nested Writes instead, see track.service.ts.
+  // async updateTrend(trackId: number) {
+  //   await this.prismaService.trackMetrics.update({
+  //     where: { trackId },
+  //     data: { playCount: { increment: 1 } },
+  //   });
+  // }
 }
