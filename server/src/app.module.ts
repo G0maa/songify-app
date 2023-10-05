@@ -14,6 +14,7 @@ import { TrendModule } from './trend/trend.module';
 import { FavoriteModule } from './favorite/favorite.module';
 import { MessageQueueModule } from './message-queue/message-queue.module';
 import { RecommendModule } from './recommend/recommend.module';
+import { MinIoModule } from './min-io/min-io.module';
 
 // Mhm... should the ConfigModule be global?
 @Module({
@@ -29,6 +30,7 @@ import { RecommendModule } from './recommend/recommend.module';
     FavoriteModule,
     MessageQueueModule,
     RecommendModule,
+    MinIoModule,
   ],
   controllers: [AppController],
   providers: [AppService],
